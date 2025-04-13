@@ -8,6 +8,82 @@ import { Link } from '@inertiajs/react';
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
+    const renderLinksForRole = () => {
+        const role = user.role?.name;
+
+        switch (role) {
+            case 'admin':
+                return (
+                    <>
+                        <NavLink href={route('dashboard')} active={route().current('dashboard')}>Dashboard</NavLink>
+                        <NavLink href={route('usuarios')} active={route().current('usuarios')}>Usuarios</NavLink>
+                        <NavLink href={route('reportes')} active={route().current('reportes')}>Reportes</NavLink>
+                    </>
+                );
+            case 'empleado':
+                return (
+                    <>
+                        <NavLink href={route('dashboard')} active={route().current('dashboard')}>Dashboard</NavLink>
+                        <NavLink href={route('inventario')} active={route().current('inventario')}>Inventario</NavLink>
+                        <NavLink href={route('copias')} active={route().current('copias')}>Copias</NavLink>
+                    </>
+                );
+            case 'cliente':
+                return (
+                    <>
+                        <NavLink href={route('dashboard')} active={route().current('dashboard')}>Inicio</NavLink>
+                        <NavLink href={route('perfil')} active={route().current('perfil')}>Perfil</NavLink>
+                        <NavLink href={route('carrito')} active={route().current('carrito')}>Carrito</NavLink>
+                    </>
+                );
+            case 'invitado':
+            default:
+                return (
+                    <>
+                        <NavLink href={route('dashboard')} active={route().current('dashboard')}>Inicio</NavLink>
+                    </>
+                );
+        }
+    };
+
+    const renderResponsiveLinksForRole = () => {
+        const role = user.role?.name;
+
+        switch (role) {
+            case 'admin':
+                return (
+                    <>
+                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>Dashboard</ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('usuarios')} active={route().current('usuarios')}>Usuarios</ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('reportes')} active={route().current('reportes')}>Reportes</ResponsiveNavLink>
+                    </>
+                );
+            case 'empleado':
+                return (
+                    <>
+                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>Dashboard</ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('inventario')} active={route().current('inventario')}>Inventario</ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('copias')} active={route().current('copias')}>Copias</ResponsiveNavLink>
+                    </>
+                );
+            case 'cliente':
+                return (
+                    <>
+                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>Inicio</ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('perfil')} active={route().current('perfil')}>Perfil</ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('carrito')} active={route().current('carrito')}>Carrito</ResponsiveNavLink>
+                    </>
+                );
+            case 'invitado':
+            default:
+                return (
+                    <>
+                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>Inicio</ResponsiveNavLink>
+                    </>
+                );
+        }
+    };
+
     return (
         <div className="min-h-screen bg-gray-100">
             <nav className="bg-white border-b border-gray-100">
@@ -19,11 +95,8 @@ export default function Authenticated({ user, header, children }) {
                                     <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
                                 </Link>
                             </div>
-
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                    Dashboard
-                                </NavLink>
+                                {renderLinksForRole()}
                             </div>
                         </div>
 
@@ -37,7 +110,6 @@ export default function Authenticated({ user, header, children }) {
                                                 className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
                                             >
                                                 {user.name}
-
                                                 <svg
                                                     className="ms-2 -me-0.5 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -53,11 +125,10 @@ export default function Authenticated({ user, header, children }) {
                                             </button>
                                         </span>
                                     </Dropdown.Trigger>
-
                                     <Dropdown.Content>
-                                        <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
-                                        <Dropdown.Link href={route('logout')} method="post" as="button">
-                                            Log Out
+                                        <Dropdown.Link href={route('profile.edit')}>Perfil</Dropdown.Link>
+                                        <Dropdown.Link method="post" href={route('logout')} as="button">
+                                            Cerrar sesión
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
@@ -92,21 +163,17 @@ export default function Authenticated({ user, header, children }) {
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                            Dashboard
-                        </ResponsiveNavLink>
+                        {renderResponsiveLinksForRole()}
                     </div>
-
                     <div className="pt-4 pb-1 border-t border-gray-200">
                         <div className="px-4">
                             <div className="font-medium text-base text-gray-800">{user.name}</div>
                             <div className="font-medium text-sm text-gray-500">{user.email}</div>
                         </div>
-
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
+                            <ResponsiveNavLink href={route('profile.edit')}>Perfil</ResponsiveNavLink>
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
-                                Log Out
+                                Cerrar sesión
                             </ResponsiveNavLink>
                         </div>
                     </div>
